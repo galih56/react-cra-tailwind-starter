@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState,useEffect} from 'react';
+import  {Modal} from './Components';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+import { HomePage, LoginPage } from './Pages';
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => setShowModal(!showModal);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <Router>
+      <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+        <p className="text-3xl text-gray-700 font-bold mb-5">
+          Welcome!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+        <button onClick={toggleModal}>Login</button>
+        <Routes>
+          <Route exact path="/" element={<HomePage />}/>
+          <Route path="/login" element={<LoginPage/>}/>
+        </Routes>
+        <Link to={'/login'}>Login</Link>
+        <Link to={'/home'}>Home</Link>
+        {/* <Modal show={showModal} onClose={toggleModal}/> */}
+      </div>
+    </Router>
   );
 }
-
 export default App;
