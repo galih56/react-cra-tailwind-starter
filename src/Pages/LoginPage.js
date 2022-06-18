@@ -1,44 +1,66 @@
-import React, {useState, useEffect} from 'react';
 
-export const LoginPage=()=>{
+import React from 'react';
+import axios from 'axios';
+import { Input } from '../Components';
+import { useAuth } from '../Context/authContext';
+import { useForm } from 'react-hook-form';
+import {useNavigate}from'react-router-dom';
+
+const LoginPage=()=>{
+    let { handleSubmit, register, formState : { errors } }=useForm();
+    let { auth, authDispatch }=useAuth();
+    let navigate=useNavigate();
+        
+    const signIn=(body)=>{
+        axios.post(`${process.env.REACT_APP_API_URL}login`,body,{
+            headers:{'Content-Type':'application/json'}
+        }).then(({data}) => {
+            authDispatch({type:'store',payload: { ...auth, access_token : data.token }});
+            navigate('/')
+        }).catch(({response}) => {
+            switch (response.status) {
+            case 401 || 400:
+                
+                break;
+            case 404:
+                
+                break;
+            
+            case 422:
+            
+                break;
+            default:
+                break;
+            }
+        })
+    }
+
     return(
-        <div className="lg:flex">
-            <div className="lg:w-1/2 xl:max-w-screen-sm">
-                <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
-                    <h2 className="text-center text-4xl text-indigo-900 font-display font-semibold lg:text-left xl:text-5xl
-                    xl:text-bold">Log in</h2>
-                    <div className="mt-12">
-                        <form>
-                            <div>
-                                <div className="text-sm font-bold text-gray-700 tracking-wide">Email Address</div>
-                                <input className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="mike@gmail.com"/>
-                            </div>
-                            <div className="mt-8">
-                                <div className="flex justify-between items-center">
-                                    <div className="text-sm font-bold text-gray-700 tracking-wide">
-                                        Password
-                                    </div>
-                                    <div>
-                                        <a className="text-xs font-display font-semibold text-indigo-600 hover:text-indigo-800
-                                        cursor-pointer">
-                                            Forgot Password?
-                                        </a>
-                                    </div>
-                                </div>
-                                <input className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" type="" placeholder="Enter your password"/>
-                            </div>
-                            <div className="mt-10">
-                                <button className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
-                                font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg">
-                                    Log In
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+        <form onSubmit={handleSubmit(signIn)}>
+            <div className="relative p-6 flex-auto">
+                <Input label="Email" placeholder="Fill your email here..."
+                    inputType="email"
+                    {...register('email',{ 
+                        required: {value:true,message:'Email is required'}, 
+                        pattern: {  
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,  
+                            message: "invalid email address"
+                        } 
+                    })} 
+                    errorText={errors.email && errors.email.message}/>
+                    
+                <Input label="Password" placeholder="Fill your password here..." 
+                    inputType="password"
+                    {...register("password", { min: 8, max: 99 })}
+                    errorText={errors.password && errors.password.message} />
 
-    )
+                <button className="btn-primary py-2 px-4 my-4" type="submit">
+                    Sign In
+                </button>
+            </div>
+        </form>
+        </div>
+    )   
 }
+export default LoginPage;

@@ -1,23 +1,29 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root {
     --theme-color: #52b3d0;
 }
+
+body{
+  font-family: 'Poppins', sans-serif;
+}
   
 button {
-    @apply rounded-full bg-gray-900 text-center py-2 px-4 text-white
+    @apply rounded bg-gray-900 text-center py-2 px-4 text-white
 }
 
-.btn{
-    background-color: var(--theme-color)
+
+.btn-primary{
+    @apply bg-blue-500 text-white font-bold active:bg-blue-600 hover:bg-blue-700 rounded shadow hover:shadow-md  outline-none focus:outline-none ease-linear transition-all duration-150 
 }
 
-.card {
-    @apply rounded-none;
-  
-    @media (min-width: theme('screens.sm')) {
-      @apply rounded-lg;
-    }
+.btn-success{
+    @apply bg-emerald-500 text-white font-bold active:bg-emerald-600 hover:bg-emerald-700 rounded shadow hover:shadow-md  outline-none focus:outline-none ease-linear transition-all duration-150 
+}
+
+.btn-info{
+    @apply bg-gray-200 text-white text-gray-400 font-bold active:bg-gray-400 hover:bg-gray-500 rounded text-sm leading-none focus:outline-none  shadow hover:shadow-md  outline-none focus:outline-none ease-linear transition-all duration-150 
 }

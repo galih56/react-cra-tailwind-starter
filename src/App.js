@@ -1,34 +1,27 @@
-import React, {useState,useEffect} from 'react';
-import  {Modal} from './Components';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  Link,
+  Navigate
 } from "react-router-dom";
-import { HomePage, LoginPage } from './Pages';
+import HomePage from './Pages/HomePage';
+import LoginPage from './Pages/LoginPage';
+import NotFoundPage from './Pages/NotFoundPage';
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
-
-  const toggleModal = () => setShowModal(!showModal);
-  
   return (
     <Router>
-      <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
-        <p className="text-3xl text-gray-700 font-bold mb-5">
-          Welcome!
-        </p>
-        <button onClick={toggleModal}>Login</button>
         <Routes>
-          <Route exact path="/" element={<HomePage />}/>
-          <Route path="/login" element={<LoginPage/>}/>
+          <Route path="/" element={<Navigate to="users"/>}/>
+          <Route path="/users/:id" element={<HomePage />}/>
+          <Route path="/users" element={<HomePage />}/>
+          <Route path="/login" element={<LoginPage />}/>
+          <Route path="" element={<NotFoundPage />} />
         </Routes>
-        <Link to={'/login'}>Login</Link>
-        <Link to={'/home'}>Home</Link>
-        {/* <Modal show={showModal} onClose={toggleModal}/> */}
-      </div>
     </Router>
   );
 }
+
 export default App;
